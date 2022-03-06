@@ -19,10 +19,7 @@ int main()
 	i = ReadInt();
 	PrintInt(i);
     Halt();
-<<<<<<< HEAD:nachos/nachos-3.4/code/test/halt.c
-=======
     // Hoang test
     // Hai test
->>>>>>> 68fa2b6a1b3a3f8171886ba59c156228f0ca0f0a:test/halt.c
     /* not reached */
 }
