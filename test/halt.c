@@ -17,5 +17,6 @@ main()
 {
     Halt();
     // Hoang test
+    // Hai test
     /* not reached */
 }
