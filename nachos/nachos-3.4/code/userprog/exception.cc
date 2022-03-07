@@ -164,7 +164,7 @@ ExceptionHandler(ExceptionType which)
 
 		case SyscallException:
 			switch (type) {
-				case SC_Halt:
+				case SC_Halt: 
 					DEBUG('a', "\nShutdown, initiated by user program. ");
 					printf("\nShutdown, initiated by user program. ");
 					interrupt->Halt();
@@ -249,7 +249,6 @@ ExceptionHandler(ExceptionType which)
 					delete buffer;
 					return;
 				}
-
 				case SC_PrintNum: {
 					//Print num(int)
 					int n = machine->ReadRegister(4);
@@ -298,12 +297,18 @@ ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_RandomNum: {
-					printf("\nThe random number: ");
+					printf("\n");
 					RandomInit(time(0));
 					machine->WriteRegister(2, Random());
 					IncreasePC();
 					return;
 				}
+				case SC_PrintChar:{
+           			char c = (char)machine->ReadRegister(4); // read the character from r4
+					gSynchConsole->Write(&c, 1);            
+            		IncreasePC();
+            		return;
+        		}
 				default:
 					break;
 			}

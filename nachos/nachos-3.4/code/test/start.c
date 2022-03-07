@@ -146,7 +146,15 @@ PrintNum:
 	syscall
 	j	$31
 	.end PrintNum
-// cau 7
+//cau 6
+	.globl PrintChar
+	.ent PrintChar
+PrintChar:
+	addiu $2, $0, SC_PrintChar
+	syscall
+	j	$31
+	.end PrintChar
+//cau 7
 	.globl RandomNum
 	.ent RandomNum
 RandomNum:
