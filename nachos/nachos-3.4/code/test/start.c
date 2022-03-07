@@ -10,7 +10,7 @@
 #include "syscall.h"
 
 		.text
-        .align  2
+		.align  2
 
 /* -------------------------------------------------------------
  * __start
@@ -131,18 +131,18 @@ Yield:
 	.end Yield
 
 //cau 3
-	.globl ReadInt
-	.ent ReadInt
-ReadInt:
-    addiu $2, $0, SC_ReadInt
+	.globl ReadNum
+	.ent ReadNum
+ReadNum:
+    addiu $2, $0, SC_ReadNum
     syscall
     j $31
-    .end ReadInt
+    .end ReadNum
 //cau 4
-	.globl PrintInt
-	.ent PrintInt
-PrintInt:
-	addiu $2, $0, SC_PrintInt
+	.globl PrintNum
+	.ent PrintNum
+PrintNum:
+	addiu $2, $0, SC_PrintNum
 	syscall
 	j	$31
 	.end PrintInt
@@ -162,6 +162,31 @@ PrintString:
 	syscall
 	j	$31
 	.end PrintString
+	.end PrintNum
+// cau 5
+	.globl ReadChar
+	.ent ReadChar
+ReadChar:
+    addiu $2, $0, SC_ReadChar
+    syscall
+    j $31
+    .end ReadChar
+//cau 6
+	.globl PrintChar
+	.ent PrintChar
+PrintChar:
+	addiu $2, $0, SC_PrintChar
+	syscall
+	j	$31
+	.end PrintChar
+//cau 7
+	.globl RandomNum
+	.ent RandomNum
+RandomNum:
+	addiu $2, $0, SC_RandomNum
+	syscall
+	j	$31
+	.end RandomNum
 
 /* dummy function to keep gcc happy */
         .globl  __main

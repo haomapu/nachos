@@ -33,9 +33,12 @@
 #define SC_ReadInt	11
 #define SC_PrintInt	12
 
+#define SC_RandomNum 13
+#define SC_ReadChar 14
+#define SC_PrintChar 15
+
 #define SC_ReadString 16
 #define SC_PrintString 17
-
 #ifndef IN_ASM
 
 /* The system call interface.  These are the operations the Nachos
@@ -131,9 +134,15 @@ void Fork(void (*func)());
 void Yield();
 
 //Hoang
-int ReadInt();//cau 3
+int ReadNum();//cau 3
 
-void PrintInt(int number);//cau4
+void PrintNum(int number);//cau4
+
+char ReadChar();//cau5
+
+void PrintChar(char character);//cau 6
+
+int RandomNum();//cau 7
 
 void ReadString(char buffer[], int length); //cau 8
 
