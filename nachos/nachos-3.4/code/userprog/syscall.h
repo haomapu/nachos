@@ -33,6 +33,7 @@
 #define SC_ReadNum	11
 #define SC_PrintNum	12
 #define SC_RandomNum 13
+#define SC_ReadChar	14
 #ifndef IN_ASM
 
 /* The system call interface.  These are the operations the Nachos
@@ -132,7 +133,10 @@ int ReadNum();//cau 3
 
 void PrintNum(int number);//cau4
 
+char ReadChar();//cau5
+
 int RandomNum();//cau 7
+
 #endif /* IN_ASM */
 
 #endif /* SYSCALL_H */

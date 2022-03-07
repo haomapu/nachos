@@ -298,12 +298,42 @@ ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_RandomNum: {
-					printf("\nThe random number: ");
+					DEBUG('a', "\n");
+					printf("\n\n");
 					RandomInit(time(0));
 					machine->WriteRegister(2, Random());
 					IncreasePC();
 					return;
 				}
+				case SC_ReadChar: {
+					//Readchar
+					DEBUG('a', "\n");
+					printf("\n\n");
+					int maxBytes = 255;
+					char* buffer = new char[255];
+					int numBytes = gSynchConsole->Read(buffer, maxBytes);
+
+					if (numBytes > 1) {//Neu nhap nhieu hon 1 ky tu thi khong hop le
+						printf("It is not a character");
+						DEBUG('a', "\nERROR: It is not a character");
+						machine->WriteRegister(2, 0);
+					}
+					else if (numBytes == 0) {//Ky tu rong
+						printf("Empty!");
+						DEBUG('a', "\nERROR: Empty!");
+						machine->WriteRegister(2, 0);
+					}
+					else {
+						//Chuoi vua lay co dung 1 ky tu, lay ky tu o index = 0, return vao thanh ghi R2
+						char c = buffer[0];
+						machine->WriteRegister(2, c);
+					}
+					delete buffer;
+					//IncreasePC(); // error system
+					//return;
+					break;
+				}
+
 				default:
 					break;
 			}

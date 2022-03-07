@@ -16,9 +16,12 @@ int main()
 {
     //them test
     int i;
+    char c;
 	i = ReadNum();
 	PrintNum(i);
     PrintNum(RandomNum());
+
+    c = ReadChar();
     Halt();
     // Hoang test
     // Hai test
