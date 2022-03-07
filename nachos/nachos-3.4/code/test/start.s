@@ -146,8 +146,15 @@ PrintNum:
 	syscall
 	j	$31
 	.end PrintNum
-<<<<<<< HEAD
 	
+	.globl ReadChar
+	.ent ReadChar
+ReadChar:
+    addiu $2, $0, SC_ReadChar
+    syscall
+    j $31
+    .end ReadChar
+
 	.globl PrintChar
 	.ent PrintChar
 PrintChar:
@@ -155,8 +162,6 @@ PrintChar:
 	syscall
 	j	$31
 	.end PrintChar
-=======
->>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
 
 	.globl RandomNum
 	.ent RandomNum
@@ -165,14 +170,6 @@ RandomNum:
 	syscall
 	j	$31
 	.end RandomNum
-
-	.globl ReadChar
-	.ent ReadChar
-ReadChar:
-    addiu $2, $0, SC_ReadChar
-    syscall
-    j $31
-    .end ReadChar
 
 /* dummy function to keep gcc happy */
         .globl  __main

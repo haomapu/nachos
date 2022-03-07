@@ -297,25 +297,13 @@ ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_RandomNum: {
-<<<<<<< HEAD
-					printf("\n");
-=======
 					DEBUG('a', "\n");
 					printf("\n\n");
->>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
 					RandomInit(time(0));
 					machine->WriteRegister(2, Random());
 					IncreasePC();
 					return;
 				}
-<<<<<<< HEAD
-				case SC_PrintChar:{
-           			char c = (char)machine->ReadRegister(4); // read the character from r4
-					gSynchConsole->Write(&c, 1);            
-            		IncreasePC();
-            		return;
-        		}
-=======
 				case SC_ReadChar: {
 					//Readchar
 					DEBUG('a', "\n");
@@ -344,8 +332,12 @@ ExceptionHandler(ExceptionType which)
 					//return;
 					break;
 				}
-
->>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
+				case SC_PrintChar:{
+           			char c = (char)machine->ReadRegister(4); // read the character from r4
+					gSynchConsole->Write(&c, 1);            
+            		IncreasePC();
+            		return;
+        		}
 				default:
 					break;
 			}
