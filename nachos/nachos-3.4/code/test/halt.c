@@ -16,15 +16,6 @@ int main()
 {
 
     //them test
-    // int i;
-	// i = ReadInt();
-	// PrintInt(i);
-
-    char buffer[5];
-    ReadString(buffer, 5);
-    PrintString(buffer);
-
-
     int i;
     char c;
 	i = ReadNum();
@@ -40,9 +31,7 @@ int main()
 
     // In cac ten cot trong bang
     PrintChar('\t');
-    PrintChar('D');
-    PrintChar('e');
-    PrintChar('c');
+    PrintString("Dec");
     PrintChar('\t');
     PrintChar('C');
     PrintChar('h');

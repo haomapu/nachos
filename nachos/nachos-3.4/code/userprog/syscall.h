@@ -30,9 +30,8 @@
 #define SC_Fork		9
 #define SC_Yield	10
 
-#define SC_ReadInt	11
-#define SC_PrintInt	12
-
+#define SC_ReadNum	11
+#define SC_PrintNum	12
 #define SC_RandomNum 13
 #define SC_ReadChar 14
 #define SC_PrintChar 15

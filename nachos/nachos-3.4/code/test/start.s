@@ -130,7 +130,6 @@ Yield:
 	j	$31
 	.end Yield
 
-
 	.globl ReadNum
 	.ent ReadNum
 ReadNum:
