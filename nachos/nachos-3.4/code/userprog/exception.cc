@@ -153,160 +153,142 @@ ExceptionHandler(ExceptionType which)
 			break;
 
 		case NumExceptionTypes:
-			DEBUG('a', "\n Number exception types");
-			printf("\n\n Number exception types");
+			DEBUG('a', "\n n exception types");
+			printf("\n\n n exception types");
 			interrupt->Halt();
 			break;
 
 
 		case SyscallException:
 			switch (type) {
+				case SC_Halt:
+					DEBUG('a', "\nShutdown, initiated by user program. ");
+					printf("\nShutdown, initiated by user program. ");
+					interrupt->Halt();
+					return;
 
-			case SC_Halt:
-				// Input: Khong co
-				// Output: Thong bao tat may
-				// Chuc nang: Tat HDH
-				DEBUG('a', "\nShutdown, initiated by user program. ");
-				printf("\nShutdown, initiated by user program. ");
-				interrupt->Halt();
-				return;
+				case SC_ReadNum: {
+					//Read num(int)
+					char* buffer;
+					int MAX_BUFFER = 255;
+					buffer = new char[MAX_BUFFER + 1];
+					int numbytes = gSynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, tra ve so ki tu doc dc
+					long long n = 0; // so luu ket qua tra ve cuoi cung
 
-			case SC_ReadInt:
-			{
-						// Input: K co
-						// Output: Tra ve so nguyen doc duoc tu man hinh console.
-						// Chuc nang: Doc so nguyen tu man hinh console.
-						char* buffer;
-						int MAX_BUFFER = 255;
-						buffer = new char[MAX_BUFFER + 1];
-						int numbytes = gSynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, tra ve so ki tu doc dc
-						int number = 0; // so luu ket qua tra ve cuoi cung
+					// Xac dinh so am hay so duong (1 la am, 0 la duong)
+					bool sign = 0;
+					int firstIndex = 0;
+					int lastIndex = 0;
+					if (buffer[0] == '-') {
+						sign = 1;
+						firstIndex = 1;
+						lastIndex = 1;
+					}
 
-						/* Qua trinh chuyen doi tu buffer sang so nguyen int */
-
-						// Xac dinh so am hay so duong
-						bool isNegative = false; // Gia thiet la so duong.
-						int firstNumIndex = 0;
-						int lastNumIndex = 0;
-						if(buffer[0] == '-')
-						{
-							isNegative = true;
-							firstNumIndex = 1;
-							lastNumIndex = 1;
-						}
-
-						// Kiem tra tinh hop le cua so nguyen buffer
-						for(int i = firstNumIndex; i < numbytes; i++)
-						{
-							if(buffer[i] == '.') /// 125.0000000 van la so
-							{
-								int j = i + 1;
-								for(; j < numbytes; j++)
-								{
-					// So khong hop le
-									if(buffer[j] != '0')
-									{
-										printf("\n\n The integer number is not valid");
-										DEBUG('a', "\n The integer number is not valid");
-										machine->WriteRegister(2, 0);
-										IncreasePC();
-										delete buffer;
-										return;
-									}
+					// Kiem tra so nguyen buffer
+					for (int i = firstIndex; i < numbytes; i++) {
+						if (buffer[i] == '.') {// 1.00
+							for (int j = i + 1; j < numbytes; j++) {
+								// So khong hop le
+								if (buffer[j] != '0') {
+									printf(" - The integer n is not valid");
+									DEBUG('a', " - The integer n is not valid");
+									machine->WriteRegister(2, 0);
+									IncreasePC();
+									delete buffer;
+									return;
 								}
-								// la so thoa cap nhat lastNumIndex
-								lastNumIndex = i - 1;
-								break;
 							}
-							else if(buffer[i] < '0' && buffer[i] > '9')
-							{
-								printf("\n\n The integer number is not valid");
-								DEBUG('a', "\n The integer number is not valid");
-								machine->WriteRegister(2, 0);
-								IncreasePC();
-								delete buffer;
-								return;
-							}
-							lastNumIndex = i;
+							// la so thoa cap nhat lastIndex
+							lastIndex = i - 1;
+							break;
 						}
-
-						// La so nguyen hop le, tien hanh chuyen chuoi ve so nguyen
-						for(int i = firstNumIndex; i<= lastNumIndex; i++)
-						{
-							number = number * 10 + (int)(buffer[i] - 48);
-						}
-
-						// neu la so am thi * -1;
-						if(isNegative)
-						{
-							number = number * -1;
-						}
-						machine->WriteRegister(2, number);
-						IncreasePC();
-						delete buffer;
-						return;
-			}
-
-			case SC_PrintInt:
-			{
-						// Input: mot so integer
-						// Output: khong co
-						// Chuc nang: In so nguyen len man hinh console
-						int number = machine->ReadRegister(4);
-						if(number == 0)
-						{
-							gSynchConsole->Write("0", 1); // In ra man hinh so 0
+						else if (buffer[i] < '0' || buffer[i] > '9') {
+							printf(" - The integer n is not valid");
+							DEBUG('a', " - The integer n is not valid");
+							machine->WriteRegister(2, 0);
 							IncreasePC();
-							return;
-						}
-
-						/*Qua trinh chuyen so thanh chuoi de in ra man hinh*/
-						bool isNegative = false; // gia su la so duong
-						int numberOfNum = 0; // Bien de luu so chu so cua number
-						int firstNumIndex = 0;
-
-						if(number < 0)
-						{
-							isNegative = true;
-							number = number * -1; // Nham chuyen so am thanh so duong de tinh so chu so
-							firstNumIndex = 1;
-						}
-
-						int t_number = number; // bien tam cho number
-						while(t_number)
-						{
-							numberOfNum++;
-							t_number /= 10;
-						}
-
-						// Tao buffer chuoi de in ra man hinh
-						char* buffer;
-						int MAX_BUFFER = 255;
-						buffer = new char[MAX_BUFFER + 1];
-						for(int i = firstNumIndex + numberOfNum - 1; i >= firstNumIndex; i--)
-						{
-							buffer[i] = (char)((number % 10) + 48);
-							number /= 10;
-						}
-						if(isNegative)
-						{
-							buffer[0] = '-';
-							buffer[numberOfNum + 1] = 0;
-							gSynchConsole->Write(buffer, numberOfNum + 1);
 							delete buffer;
-							IncreasePC();
 							return;
 						}
-						buffer[numberOfNum] = 0;
-						gSynchConsole->Write(buffer, numberOfNum);
-						delete buffer;
+						lastIndex = i;
+					}
+
+					// La so nguyen hop le, tien hanh chuyen chuoi ve so nguyen
+					for (int i = firstIndex; i<= lastIndex; i++) {
+						n = n * 10 + (int)(buffer[i] - 48);
+
+					}
+
+					// neu la so am thi * -1;
+					if (sign) {
+						n = n * -1;
+					}
+					// if (n < -2147483648|| n > 2147483647) {
+					// 	n = 0;
+					// 	printf(" - Overflow");
+					// 	DEBUG('a', " - Overflow");
+					// 	machine->WriteRegister(2, 0);
+					// 	IncreasePC();
+					// 	delete buffer;
+					// 	return;
+					// }
+					machine->WriteRegister(2, int(n));
+					IncreasePC();
+					delete buffer;
+					return;
+				}
+
+				case SC_PrintNum: {
+					//Print num(int)
+					int n = machine->ReadRegister(4);
+					if (n == 0) {
+						gSynchConsole->Write("0", 1); // In ra man hinh so 0
 						IncreasePC();
 						return;
+					}
 
+					/*Qua trinh chuyen so thanh chuoi de in ra man hinh*/
+					bool sign = 0; // gia su la so duong
+					int nOfNum = 0; // so chu so cua n
+					int firstIndex = 0;
+
+					if (n < 0) {
+						sign = 1;
+						n = n * -1; // Nham chuyen so am thanh so duong de tinh so chu so
+						firstIndex = 1;
+					}
+
+					int temp = n; // dem so chu so cua n
+					while (temp) {
+						nOfNum++;
+						temp /= 10;
+					}
+
+					// Tao buffer chuoi de in ra man hinh
+					char* buffer;
+					int MAX_BUFFER = 255;
+					buffer = new char[MAX_BUFFER + 1];
+					for (int i = firstIndex + nOfNum - 1; i >= firstIndex; i--) {
+						buffer[i] = (char)((n % 10) + 48);
+						n /= 10;
+					}
+					if (sign) {
+						buffer[0] = '-';
+						buffer[nOfNum + 1] = 0;
+						gSynchConsole->Write(buffer, nOfNum + 1);
+					}
+					else {
+						buffer[nOfNum] = 0;
+						gSynchConsole->Write(buffer, nOfNum);
+					}
+					delete buffer;
+					IncreasePC();
+					return;
+				}
+				default:
+					break;
 			}
-			default:
-				break;
-			}
-			IncreasePC();
+		IncreasePC();
 	}
 }

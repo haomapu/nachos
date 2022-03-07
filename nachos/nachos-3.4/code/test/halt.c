@@ -16,8 +16,8 @@ int main()
 {
     //them test
     int i;
-	i = ReadInt();
-	PrintInt(i);
+	i = ReadNum();
+	PrintNum(i);
     Halt();
     // Hoang test
     // Hai test

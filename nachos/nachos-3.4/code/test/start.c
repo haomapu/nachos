@@ -131,21 +131,21 @@ Yield:
 	.end Yield
 
 //cau 3
-	.globl ReadInt
-	.ent ReadInt
-ReadInt:
-    addiu $2, $0, SC_ReadInt
+	.globl ReadNum
+	.ent ReadNum
+ReadNum:
+    addiu $2, $0, SC_ReadNum
     syscall
     j $31
-    .end ReadInt
+    .end ReadNum
 //cau 4
-	.globl PrintInt
-	.ent PrintInt
-PrintInt:
-	addiu $2, $0, SC_PrintInt
+	.globl PrintNum
+	.ent PrintNum
+PrintNum:
+	addiu $2, $0, SC_PrintNum
 	syscall
 	j	$31
-	.end PrintInt
+	.end PrintNum
 
 /* dummy function to keep gcc happy */
         .globl  __main

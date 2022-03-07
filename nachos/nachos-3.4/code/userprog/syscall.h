@@ -30,8 +30,8 @@
 #define SC_Fork		9
 #define SC_Yield	10
 
-#define SC_ReadInt	11
-#define SC_PrintInt	12
+#define SC_ReadNum	11
+#define SC_PrintNum	12
 
 #ifndef IN_ASM
 
@@ -128,9 +128,9 @@ void Fork(void (*func)());
 void Yield();
 
 //Hoang
-int ReadInt();//cau 3
+int ReadNum();//cau 3
 
-void PrintInt(int number);//cau4
+void PrintNum(int number);//cau4
 
 #endif /* IN_ASM */
 
