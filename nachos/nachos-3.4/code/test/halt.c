@@ -18,6 +18,7 @@ int main()
     int i;
 	i = ReadNum();
 	PrintNum(i);
+    PrintNum(RandomNum());
     Halt();
     // Hoang test
     // Hai test

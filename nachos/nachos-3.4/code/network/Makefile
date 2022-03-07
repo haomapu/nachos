@@ -337,7 +337,18 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h \
- ../userprog/syscall.h
+ ../userprog/syscall.h \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/include/limits.h \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/../../../../include/c++/4.4.7/ctime \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/../../../../include/c++/4.4.7/cstddef \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/../../../../include/c++/4.4.7/i686-redhat-linux/bits/c++config.h \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/../../../../include/c++/4.4.7/i686-redhat-linux/bits/os_defines.h \
+ /usr/lib/gcc/i686-redhat-linux/4.4.7/../../../../include/c++/4.4.7/i686-redhat-linux/bits/cpu_defines.h \
+ /usr/include/time.h /usr/include/bits/time.h
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \

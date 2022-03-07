@@ -24,6 +24,9 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "limits.h"
+#include "machine.h"
+#include <ctime>
 
 // Doi thanh ghi Program counter cua he thong ve sau 4 byte de tiep tuc nap lenh
 void IncreasePC()
@@ -217,22 +220,30 @@ ExceptionHandler(ExceptionType which)
 					// La so nguyen hop le, tien hanh chuyen chuoi ve so nguyen
 					for (int i = firstIndex; i<= lastIndex; i++) {
 						n = n * 10 + (int)(buffer[i] - 48);
-
 					}
 
 					// neu la so am thi * -1;
 					if (sign) {
 						n = n * -1;
 					}
-					// if (n < -2147483648|| n > 2147483647) {
-					// 	n = 0;
-					// 	printf(" - Overflow");
-					// 	DEBUG('a', " - Overflow");
-					// 	machine->WriteRegister(2, 0);
-					// 	IncreasePC();
-					// 	delete buffer;
-					// 	return;
-					// }
+					if (n > INT_MAX) {
+						n = 0;
+						printf(" - Overflow");
+						DEBUG('a', " - Overflow");
+						machine->WriteRegister(2, 0);
+						IncreasePC();
+						delete buffer;
+						return;
+					}
+					else if (n < INT_MIN + 1){
+						n = 0;
+						printf(" - Overflow");
+						DEBUG('a', " - Overflow");
+						machine->WriteRegister(2, 0);
+						IncreasePC();
+						delete buffer;
+						return;
+					}
 					machine->WriteRegister(2, int(n));
 					IncreasePC();
 					delete buffer;
@@ -283,6 +294,13 @@ ExceptionHandler(ExceptionType which)
 						gSynchConsole->Write(buffer, nOfNum);
 					}
 					delete buffer;
+					IncreasePC();
+					return;
+				}
+				case SC_RandomNum: {
+					printf("\nThe random number: ");
+					RandomInit(time(0));
+					machine->WriteRegister(2, Random());
 					IncreasePC();
 					return;
 				}
