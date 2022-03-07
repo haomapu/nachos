@@ -304,6 +304,40 @@ ExceptionHandler(ExceptionType which)
 						return;
 
 			}
+			case SC_ReadString:
+			{
+				// Input: Buffer(char*), do dai toi da cua chuoi nhap vao(int)
+				// Output: Khong co
+				// Cong dung: Doc vao mot chuoi voi tham so la buffer va do dai toi da
+				int virtAddr, length;
+				char* buffer;
+				virtAddr = machine->ReadRegister(4); // Lay dia chi tham so buffer truyen vao tu thanh ghi so 4
+				length = machine->ReadRegister(5); // Lay do dai toi da cua chuoi nhap vao tu thanh ghi so 5
+				buffer = User2System(virtAddr, length); // Copy chuoi tu vung nho User Space sang System Space
+				gSynchConsole->Read(buffer, length); // Goi ham Read cua SynchConsole de doc chuoi
+				System2User(virtAddr, length, buffer); // Copy chuoi tu vung nho System Space sang vung nho User Space
+				delete buffer; 
+				IncreasePC(); // Tang Program Counter 
+				return;
+				//break;
+			}
+			case SC_PrintString:
+			{
+				// Input: Buffer(char*)
+				// Output: Chuoi doc duoc tu buffer(char*)
+				// Cong dung: Xuat mot chuoi la tham so buffer truyen vao ra man hinh
+				int virtAddr;
+				char* buffer;
+				virtAddr = machine->ReadRegister(4); // Lay dia chi cua tham so buffer tu thanh ghi so 4
+				buffer = User2System(virtAddr, 255); // Copy chuoi tu vung nho User Space sang System Space voi bo dem buffer dai 255 ki tu
+				int length = 0;
+				while (buffer[length] != 0) length++; // Dem do dai that cua chuoi
+				gSynchConsole->Write(buffer, length + 1); // Goi ham Write cua SynchConsole de in chuoi
+				delete buffer; 
+				//IncreasePC(); // Tang Program Counter 
+				//return;
+				break;
+			}
 			default:
 				break;
 			}

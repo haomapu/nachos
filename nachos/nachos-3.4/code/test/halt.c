@@ -15,9 +15,15 @@
 int main()
 {
     //them test
-    int i;
-	i = ReadInt();
-	PrintInt(i);
+    // int i;
+	// i = ReadInt();
+	// PrintInt(i);
+
+    char buffer[5];
+    ReadString(buffer, 5);
+    PrintString(buffer);
+
+
     Halt();
     // Hoang test
     // Hai test
