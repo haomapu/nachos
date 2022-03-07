@@ -297,18 +297,55 @@ ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_RandomNum: {
+<<<<<<< HEAD
 					printf("\n");
+=======
+					DEBUG('a', "\n");
+					printf("\n\n");
+>>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
 					RandomInit(time(0));
 					machine->WriteRegister(2, Random());
 					IncreasePC();
 					return;
 				}
+<<<<<<< HEAD
 				case SC_PrintChar:{
            			char c = (char)machine->ReadRegister(4); // read the character from r4
 					gSynchConsole->Write(&c, 1);            
             		IncreasePC();
             		return;
         		}
+=======
+				case SC_ReadChar: {
+					//Readchar
+					DEBUG('a', "\n");
+					printf("\n\n");
+					int maxBytes = 255;
+					char* buffer = new char[255];
+					int numBytes = gSynchConsole->Read(buffer, maxBytes);
+
+					if (numBytes > 1) {//Neu nhap nhieu hon 1 ky tu thi khong hop le
+						printf("It is not a character");
+						DEBUG('a', "\nERROR: It is not a character");
+						machine->WriteRegister(2, 0);
+					}
+					else if (numBytes == 0) {//Ky tu rong
+						printf("Empty!");
+						DEBUG('a', "\nERROR: Empty!");
+						machine->WriteRegister(2, 0);
+					}
+					else {
+						//Chuoi vua lay co dung 1 ky tu, lay ky tu o index = 0, return vao thanh ghi R2
+						char c = buffer[0];
+						machine->WriteRegister(2, c);
+					}
+					delete buffer;
+					//IncreasePC(); // error system
+					//return;
+					break;
+				}
+
+>>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
 				default:
 					break;
 			}

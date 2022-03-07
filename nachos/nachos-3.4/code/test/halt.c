@@ -14,6 +14,7 @@
 
 int main()
 {
+<<<<<<< HEAD
     int i = 5;
 
     // Ten bang ma ASCII
@@ -93,6 +94,16 @@ int main()
         }
         PrintChar('\n');
     }
+=======
+    //them test
+    int i;
+    char c;
+	i = ReadNum();
+	PrintNum(i);
+    PrintNum(RandomNum());
+
+    c = ReadChar();
+>>>>>>> 88e4ff5bc15cb0bd4dc926d2e10a43e047f52be2
     Halt();
   /* not reached */
 }
