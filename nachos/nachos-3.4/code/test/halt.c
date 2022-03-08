@@ -25,6 +25,12 @@ int main()
     c = ReadChar();
 
     i = 5;
+    PrintString("Welcome to our project!\n");
+    PrintString("Members: \n");
+    PrintString("Mai Vu Huy Hoang\t20127504\n");
+    PrintString("Ngo Gia Hai\t20127017\n");
+    PrintString("Pham Anh Hao\t20127155\n");
+
 
     // Ten bang ma ASCII
     PrintChar('\n');
