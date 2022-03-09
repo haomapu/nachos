@@ -38,9 +38,6 @@ void IncreasePC()
    	machine->WriteRegister(NextPCReg, counter + 4);
 }
 
-// Input: Khong gian dia chi User(int) - gioi han cua buffer(int)
-// Output: Bo nho dem Buffer(char*)
-// Chuc nang: Sao chep vung nho User sang vung nho System
 char* User2System(int virtAddr, int limit)
 {
 	int i; //chi so index
@@ -62,10 +59,6 @@ char* User2System(int virtAddr, int limit)
 	return kernelBuf;
 }
 
-
-// Input: Khong gian vung nho User(int) - gioi han cua buffer(int) - bo nho dem buffer(char*)
-// Output: So byte da sao chep(int)
-// Chuc nang: Sao chep vung nho System sang vung nho User
 int System2User(int virtAddr, int len, char* buffer)
 {
 	if (len < 0) return -1;
@@ -170,12 +163,10 @@ void ExceptionHandler(ExceptionType which)
 					return;
 
 				case SC_ReadNum: {
-					//Read num(int)
 					char* buffer;
-					int MAX_BUFFER = 255;
-					buffer = new char[MAX_BUFFER + 1];
-					int numbytes = gSynchConsole->Read(buffer, MAX_BUFFER);// doc buffer toi da MAX_BUFFER ki tu, tra ve so ki tu doc dc
-					long long n = 0; // so luu ket qua tra ve cuoi cung
+					buffer = new char[256];
+					int numbytes = gSynchConsole->Read(buffer, 255);// doc buffer toi da MAX_BUFFER ki tu, tra ve so ki tu doc dc
+					long long n = 0; // ket qua
 
 					// Xac dinh so am hay so duong (1 la am, 0 la duong)
 					bool sign = 0;
@@ -191,7 +182,6 @@ void ExceptionHandler(ExceptionType which)
 					for (int i = firstIndex; i < numbytes; i++) {
 						if (buffer[i] == '.') {// 1.00
 							for (int j = i + 1; j < numbytes; j++) {
-								// So khong hop le
 								if (buffer[j] != '0') {
 									printf(" - The integer n is not valid");
 									DEBUG('a', " - The integer n is not valid");
@@ -201,7 +191,6 @@ void ExceptionHandler(ExceptionType which)
 									return;
 								}
 							}
-							// la so thoa cap nhat lastIndex
 							lastIndex = i - 1;
 							break;
 						}
@@ -216,14 +205,13 @@ void ExceptionHandler(ExceptionType which)
 						lastIndex = i;
 					}
 
-					// La so nguyen hop le, tien hanh chuyen chuoi ve so nguyen
 					for (int i = firstIndex; i<= lastIndex; i++) {
 						n = n * 10 + (int)(buffer[i] - 48);
 					}
 
-					// neu la so am thi * -1;
-					if (sign) {
-						n = n * -1;
+					// xu ly so am
+					if (sign == 1) {
+						n *= (-1);
 					}
 					if (n > INT_MAX) {
 						n = 0;
@@ -249,35 +237,33 @@ void ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_PrintNum: {
-					//Print num(int)
 					int n = machine->ReadRegister(4);
 					if (n == 0) {
-						gSynchConsole->Write("0", 1); // In ra man hinh so 0
+						gSynchConsole->Write("0", 1);
 						IncreasePC();
 						return;
 					}
 
-					/*Qua trinh chuyen so thanh chuoi de in ra man hinh*/
-					bool sign = 0; // gia su la so duong
-					int nOfNum = 0; // so chu so cua n
+					// Doi chuoi -> so
+					bool sign = 0; 
+					int nOfNum = 0; // Do dai so
 					int firstIndex = 0;
 
-					if (n < 0) {
+					if (n < 0) { // Kiem tra am duong
 						sign = 1;
-						n = n * -1; // Nham chuyen so am thanh so duong de tinh so chu so
+						n *= (-1); 
 						firstIndex = 1;
 					}
 
-					int temp = n; // dem so chu so cua n
+					int temp = n; // Dem so chu so cua n
 					while (temp) {
 						nOfNum++;
 						temp /= 10;
 					}
 
-					// Tao buffer chuoi de in ra man hinh
+					// Doi so -> chuoi
 					char* buffer;
-					int MAX_BUFFER = 255;
-					buffer = new char[MAX_BUFFER + 1];
+					buffer = new char[256];
 					for (int i = firstIndex + nOfNum - 1; i >= firstIndex; i--) {
 						buffer[i] = (char)((n % 10) + 48);
 						n /= 10;
@@ -302,68 +288,60 @@ void ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_ReadChar: {
-					//Readchar
 					DEBUG('a', "\n");
 					int maxBytes = 255;
 					char* buffer = new char[255];
 					int numBytes = gSynchConsole->Read(buffer, maxBytes);
 
-					if (numBytes > 1) {//Neu nhap nhieu hon 1 ky tu thi khong hop le
+					if (numBytes > 1) {
 						printf("It is not a character");
 						DEBUG('a', "\nERROR: It is not a character");
 						machine->WriteRegister(2, 0);
 					}
-					else if (numBytes == 0) {//Ky tu rong
+					else if (numBytes == 0) {
 						printf("Empty!");
 						DEBUG('a', "\nERROR: Empty!");
 						machine->WriteRegister(2, 0);
 					}
 					else {
-						//Chuoi vua lay co dung 1 ky tu, lay ky tu o index = 0, return vao thanh ghi R2
 						char c = buffer[0];
 						machine->WriteRegister(2, c);
 					}
 					delete buffer;
-					//IncreasePC(); // error system
-					//return;
 					break;
 				}
 				case SC_PrintChar:{
-           			char c = (char)machine->ReadRegister(4); // read the character from r4
+           			char c = (char)machine->ReadRegister(4); // Doc ki tu tu thanh ghi 4
 					gSynchConsole->Write(&c, 1);            
             		IncreasePC();
             		return;
         		}
 				case SC_ReadString:
 				{
-					// Input: Buffer(char*), do dai toi da cua chuoi nhap vao(int)
-					// Output: Khong co
-					// Cong dung: Doc vao mot chuoi voi tham so la buffer va do dai toi da
 					int virtAddr, length;
 					char* buffer;
-					virtAddr = machine->ReadRegister(4); // Lay dia chi tham so buffer truyen vao tu thanh ghi so 4
-					length = machine->ReadRegister(5); // Lay do dai toi da cua chuoi nhap vao tu thanh ghi so 5
-					buffer = User2System(virtAddr, length); // Copy chuoi tu vung nho User Space sang System Space
-					gSynchConsole->Read(buffer, length); // Goi ham Read cua SynchConsole de doc chuoi
-					System2User(virtAddr, length, buffer); // Copy chuoi tu vung nho System Space sang vung nho User Space
+					virtAddr = machine->ReadRegister(4);
+					length = machine->ReadRegister(5);
+					buffer = User2System(virtAddr, length);
+					gSynchConsole->Read(buffer, length); 
+					System2User(virtAddr, length, buffer);
 					delete buffer; 
-					IncreasePC(); // Tang Program Counter 
+					IncreasePC();
 					return;
 				}
 				case SC_PrintString:
 				{
-					// Input: Buffer(char*)
-					// Output: Chuoi doc duoc tu buffer(char*)
-					// Cong dung: Xuat mot chuoi la tham so buffer truyen vao ra man hinh
 					int virtAddr;
 					char* buffer;
-					virtAddr = machine->ReadRegister(4); // Lay dia chi cua tham so buffer tu thanh ghi so 4
-					buffer = User2System(virtAddr, 255); // Copy chuoi tu vung nho User Space sang System Space voi bo dem buffer dai 255 ki tu
+					virtAddr = machine->ReadRegister(4);
+					buffer = User2System(virtAddr, 255);
 					int length = 0;
-					while (buffer[length] != 0) length++; // Dem do dai that cua chuoi
-					gSynchConsole->Write(buffer, length + 1); // Goi ham Write cua SynchConsole de in chuoi
+					while (buffer[length] != 0) {
+						length++;
+					}
+					gSynchConsole->Write(buffer, length + 1);
 					delete buffer; 
-					IncreasePC(); // Tang Program Counter 
+					IncreasePC();
 					return;
 				}
 				default:
