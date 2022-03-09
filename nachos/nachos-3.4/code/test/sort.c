@@ -18,8 +18,9 @@ void inputArray(int arr[], int n)
     int i;
     for (i = 0; i < n; i++)
     {
-        PrintString("So thu ");
+        PrintString("a[");
         PrintNum(i);
+        PrintString("] ");
         PrintString(": ");
         arr[i] = ReadNum();
     }
@@ -40,12 +41,12 @@ int main()
 {
     int arr[10];
     int n;
-    PrintString("Do dai cua mang: ");
+    PrintString("Enter length of array: ");
     n = ReadNum();
     inputArray(arr, n);
-    PrintString("Mang sau khi nhap: \n");
+    PrintString("Array: \n");
     printArray(arr, n);
     bubbleSort(arr, n);
-    PrintString("Mang sau khi sort: \n");
+    PrintString("Array is sorted: \n");
     printArray(arr, n);
 }

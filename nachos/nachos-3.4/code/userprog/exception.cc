@@ -103,8 +103,7 @@ int System2User(int virtAddr, int len, char* buffer)
 //	are in machine.h.
 //----------------------------------------------------------------------
 
-void
-ExceptionHandler(ExceptionType which)
+void ExceptionHandler(ExceptionType which)
 {
     int type = machine->ReadRegister(2);
 
@@ -297,8 +296,6 @@ ExceptionHandler(ExceptionType which)
 					return;
 				}
 				case SC_RandomNum: {
-					DEBUG('a', "\n");
-					printf("\n\n");
 					RandomInit(time(0));
 					machine->WriteRegister(2, Random());
 					IncreasePC();
@@ -307,7 +304,6 @@ ExceptionHandler(ExceptionType which)
 				case SC_ReadChar: {
 					//Readchar
 					DEBUG('a', "\n");
-					printf("\n\n");
 					int maxBytes = 255;
 					char* buffer = new char[255];
 					int numBytes = gSynchConsole->Read(buffer, maxBytes);

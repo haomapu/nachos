@@ -132,7 +132,6 @@ void Fork(void (*func)());
  */
 void Yield();
 
-//Hoang
 int ReadNum();//cau 3
 
 void PrintNum(int number);//cau4
