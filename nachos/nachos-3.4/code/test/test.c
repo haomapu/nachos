@@ -64,7 +64,6 @@ int main()
         ReadString(fileName, 32);
 
         openFileId = Open(fileName, 1); // Goi ham Open de mo file
-        PrintNum(openFileId);
         if (openFileId != -1) //Kiem tra Open co loi khong
         {
             Close(openFileId); // Goi ham Close de dong file
