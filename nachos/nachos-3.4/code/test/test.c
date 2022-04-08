@@ -73,4 +73,15 @@ int main()
             PrintString(" -> Mo file khong thanh cong!!\n\n");
         }
     }
+    else if(mode == 7)
+    {
+        SpaceId id_file;
+        Create("mydata.txt");
+
+        id_file = Open("mydata.txt", 0);
+
+        Write("Hoang", 5, id_file);
+
+        Close(id_file);
+    }
 }
