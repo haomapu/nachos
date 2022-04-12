@@ -603,6 +603,85 @@ void ExceptionHandler(ExceptionType which)
 						return;
 					}
 				}
+				case SC_Seek:{
+					int pos = machine->ReadRegister(4); // Lay vi tri can chuyen con tro den trong file
+					int id = machine->ReadRegister(5); // Lay id cua file
+					// Kiem tra id cua file truyen vao co nam ngoai bang mo ta file khong
+					if (id < 0 || id > 14)
+					{
+						printf("\nFile nam ngoai bang mo ta.");
+					}
+					// Kiem tra co goi Seek tren console khong
+					if (id == 0 || id == 1)
+					{
+						printf("\nKhong the seek tren file console.");
+					}
+					// Neu pos = -1 thi gan pos = Length nguoc lai thi giu nguyen pos
+					if (pos == -1)
+						pos = fileSystem->openf[id]->Length();
+					if (pos > fileSystem->openf[id]->Length() || pos < 0) // Kiem tra lai vi tri pos co hop le khong
+					{
+						printf("\nVi tri khong hop le.");
+						machine->WriteRegister(2, -1);
+					}
+					else
+					{
+						// Neu hop le thi tra ve vi tri di chuyen thuc su trong file
+						fileSystem->openf[id]->Seek(pos);
+						machine->WriteRegister(2, pos);
+					}
+					IncreasePC();
+					return;
+					break;
+				}
+				case SC_Remove:{
+					// Tao ra file voi tham so la ten file
+					// int RemoveFile(char* filename)
+					int virtAddr;
+					char *filename;
+
+					// read filename from register r4
+					virtAddr = machine->ReadRegister(4);
+					filename = User2System(virtAddr, MaxFileLength + 1);
+
+					// filename len = 0
+					if (strlen(filename) == 0)
+					{
+						printf("\nFile name is not valid");
+						machine->WriteRegister(2, -1); // fail
+						delete[] filename;
+						IncreasePC();
+						return;
+					}
+
+					// can't read filename
+					if (filename == NULL)
+					{
+						printf("\nNot enough memory in system");
+						machine->WriteRegister(2, -1); //  fail
+						delete[] filename;
+						IncreasePC();
+						return;
+					}
+
+					// fail in remove file
+					if (!fileSystem->Remove(filename))
+					{
+						printf("\nError remove file '%s'", filename);
+						machine->WriteRegister(2, -1); // fail
+						delete[] filename;
+						IncreasePC();
+						return;
+					}
+
+					machine->WriteRegister(2, 0); // success
+					delete[] filename;
+					//Xoa file thanh cong
+					printf("\nRemove file success!");
+					IncreasePC();
+					return;
+					break;
+				}
 				default:
 					break;
 			}

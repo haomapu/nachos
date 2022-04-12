@@ -38,6 +38,9 @@
 
 #define SC_ReadString 16
 #define SC_PrintString 17
+
+#define SC_Seek 18
+#define SC_Remove 19
 #ifndef IN_ASM
 
 /* The system call interface.  These are the operations the Nachos
@@ -145,6 +148,10 @@ int RandomNum();//cau 7
 void ReadString(char buffer[], int length); //cau 8
 
 void PrintString(char buffer[]); //cau 9
+
+int Seek(int position, OpenFileId id);
+
+int Remove(char *name);
 
 #endif /* IN_ASM */
 
