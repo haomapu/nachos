@@ -17,15 +17,6 @@
 // All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
-
-/////////////////////////////////////////////////
-// 	DH KHTN - DHQG TPHCM			/
-// 	1512034 Nguyen Dang Binh		/
-// 	1512042 Nguyen Thanh Chung		/
-// 	1512123 Hoang Ngoc Duc			/
-/////////////////////////////////////////////////
-
-
 #ifndef OPENFILE_H
 #define OPENFILE_H
 
@@ -37,12 +28,11 @@
 					// See definitions listed under #else
 class OpenFile {
   public:
-  	//Khai bao bien type
   	int type;
 
-	//Ham dung cua class OpenFile
-	OpenFile(int f) { file = f; currentOffset = 0; type = 0; }	// mo file mac dinh
-	OpenFile(int f, int t) { file = f; currentOffset = 0; type = t; }	// mo file voi tham so type
+	// Default method
+	OpenFile(int f) { file = f; currentOffset = 0; type = 0; }
+	OpenFile(int f, int t) { file = f; currentOffset = 0; type = t; }
     	~OpenFile() { Close(file); }			// close the file
 
   	int Seek(int pos) {
@@ -51,33 +41,28 @@ class OpenFile {
 		return currentOffset;
 	}
 
-
-
-
     int ReadAt(char *into, int numBytes, int position) {
     		Lseek(file, position, 0);
 		return ReadPartial(file, into, numBytes);
-		}
+	}
+
     int WriteAt(char *from, int numBytes, int position) {
     		Lseek(file, position, 0);
 		WriteFile(file, from, numBytes);
 		return numBytes;
-		}
-    int Read(char *into, int numBytes) {
+	}
+    
+	int Read(char *into, int numBytes) {
 		int numRead = ReadAt(into, numBytes, currentOffset);
 		currentOffset += numRead;
 		return numRead;
-    		}
-    int Write(char *from, int numBytes) {
+    }
+    
+	int Write(char *from, int numBytes) {
 		int numWritten = WriteAt(from, numBytes, currentOffset);
 		currentOffset += numWritten;
 		return numWritten;
-		}
-
-	//Default Length method
-	/*
-    int Length() { Lseek(file, 0, 2); return Tell(file); }
-	*/
+	}
 
 	int Length() {
 		int len;
@@ -87,7 +72,9 @@ class OpenFile {
 		return len;
 	}
 
-    int GetCurrentPos() { currentOffset = Tell(file); return currentOffset; }
+    int GetCurrentPos() { 
+		currentOffset = Tell(file); return currentOffset; 
+	}
 
 
   private:
@@ -100,7 +87,6 @@ class FileHeader;
 
 class OpenFile {
   public:
-  	//Khai bao bien type
   	int type;
 	// type 0 : read and write
 	// type 1 : only read

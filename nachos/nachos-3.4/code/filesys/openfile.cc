@@ -11,13 +11,6 @@
 // All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
-/////////////////////////////////////////////////
-// 	DH KHTN - DHQG TPHCM			/
-// 	1512034 Nguyen Dang Binh		/
-// 	1512042 Nguyen Thanh Chung		/
-// 	1512123 Hoang Ngoc Duc			/
-/////////////////////////////////////////////////
-
 #include "copyright.h"
 #include "filehdr.h"
 #include "openfile.h"
@@ -34,6 +27,7 @@
 //	"sector" -- the location on disk of the file header for this file
 //----------------------------------------------------------------------
 
+// Defaut method
 OpenFile::OpenFile(int sector)
 {
     hdr = new FileHeader;
@@ -41,7 +35,6 @@ OpenFile::OpenFile(int sector)
     seekPosition = 0;
 }
 
-//Cai dat ham dung OpenFile voi them tham so type
 OpenFile::OpenFile(int sector, int _type)
 {
 	hdr = new FileHeader;
@@ -150,8 +143,7 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
     // read in all the full and partial sectors that we need
     buf = new char[numSectors * SectorSize];
     for (i = firstSector; i <= lastSector; i++)
-        synchDisk->ReadSector(hdr->ByteToSector(i * SectorSize),
-					&buf[(i - firstSector) * SectorSize]);
+        synchDisk->ReadSector(hdr->ByteToSector(i * SectorSize), &buf[(i - firstSector) * SectorSize]);
 
     // copy the part we want
     bcopy(&buf[position - (firstSector * SectorSize)], into, numBytes);
@@ -183,17 +175,17 @@ OpenFile::WriteAt(char *from, int numBytes, int position)
     firstAligned = (position == (firstSector * SectorSize));
     lastAligned = ((position + numBytes) == ((lastSector + 1) * SectorSize));
 
-// read in first and last sector, if they are to be partially modified
+    // read in first and last sector, if they are to be partially modified
     if (!firstAligned)
         ReadAt(buf, SectorSize, firstSector * SectorSize);
     if (!lastAligned && ((firstSector != lastSector) || firstAligned))
         ReadAt(&buf[(lastSector - firstSector) * SectorSize],
 				SectorSize, lastSector * SectorSize);
 
-// copy in the bytes we want to change
+    // copy in the bytes we want to change
     bcopy(from, &buf[position - (firstSector * SectorSize)], numBytes);
 
-// write modified sectors back
+    // write modified sectors back
     for (i = firstSector; i <= lastSector; i++)
         synchDisk->WriteSector(hdr->ByteToSector(i * SectorSize),
 					&buf[(i - firstSector) * SectorSize]);

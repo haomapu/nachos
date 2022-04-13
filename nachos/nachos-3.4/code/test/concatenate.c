@@ -1,10 +1,9 @@
 #include "syscall.h"
-#include "copyright.h"
+
 #define MAX_LENGTH 32
 
-int main()
-{
-	int srcFileId;
+int main() {
+    int srcFileId;
 	int destFileId;
 
 	int fileSize;
@@ -21,14 +20,12 @@ int main()
 
 	if (srcFileId != -1)
 	{
-		destFileId = Create(dest);
-		Close(destFileId);
 		destFileId = Open(dest, 0);
 		if (destFileId != -1)
 		{
 			fileSize = Seek(-1, srcFileId);
 			Seek(0, srcFileId);
-			Seek(0, destFileId);
+			Seek(-1, destFileId);
 			i = 0;
 
 			for (; i < fileSize; i++)
@@ -37,7 +34,7 @@ int main()
 				Write(&c, 1, destFileId);
 			}
 
-			PrintString(" - Copy thanh cong\n");
+			PrintString(" - Concatenate success\n");
 			Close(destFileId);
 		}
 		else
@@ -52,5 +49,4 @@ int main()
 		PrintString("Loi khi mo file");
 	}
 
-	return 0;
 }

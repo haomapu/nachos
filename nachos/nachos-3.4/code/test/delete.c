@@ -5,13 +5,9 @@
 int main()
 {
 	char fileName[MAX_LENGTH];
-	PrintString("Nhap ten file can xoa\n");
+	PrintString("Nhap ten file can xoa: ");
 	ReadString(fileName, MAX_LENGTH);
-
-	PrintString("Open file aa for testing\n");
-	Open("aa", 0);
-
-	if (!Delete(fileName))
+	if (!Remove(fileName))
 	{
 		PrintString("--- Xoa file thanh cong ---\n");
 	}

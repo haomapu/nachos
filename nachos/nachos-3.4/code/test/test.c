@@ -11,8 +11,6 @@ int main()
     PrintString("\n2. Character");
     PrintString("\n3. Random number");
     PrintString("\n4. String");
-    PrintString("\n5. Create file");
-    PrintString("\n6. Open and Close file");
     PrintString("\nEnter mode: ");
     mode = ReadNum();
     if(mode == 1)
@@ -44,44 +42,5 @@ int main()
         PrintString("Your string: ");
         PrintString(s);
 
-    }
-    else if(mode == 5)
-    {
-        Create("hoang.txt");
-        PrintString("Success!!!");
-    }
-    else if(mode == 6)
-    {
-        int openFileId;
-        int fileSize;
-        char c; //Ky tu de in ra
-        char fileName[32];
-        int i; //Index for loop
-        PrintString(" - Nhap vao ten file can doc: ");
-
-        //Goi ham ReadString de doc vao ten file
-        //Co the su dung Open(stdin), nhung de tiet kiem thoi gian test ta dung ReadString
-        ReadString(fileName, 32);
-
-        openFileId = Open(fileName, 1); // Goi ham Open de mo file
-        if (openFileId != -1) //Kiem tra Open co loi khong
-        {
-            Close(openFileId); // Goi ham Close de dong file
-        }
-        else
-        {
-            PrintString(" -> Mo file khong thanh cong!!\n\n");
-        }
-    }
-    else if(mode == 7)
-    {
-        SpaceId id_file;
-        Create("mydata.txt");
-
-        id_file = Open("mydata.txt", 0);
-
-        Write("Hoang", 5, id_file);
-
-        Close(id_file);
     }
 }
