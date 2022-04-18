@@ -5,15 +5,15 @@
 int main()
 {
 	char fileName[MAX_LENGTH];
-	PrintString("Nhap ten file can xoa: ");
+	PrintString("Enter Filename: ");
 	ReadString(fileName, MAX_LENGTH);
 	if (!Remove(fileName))
 	{
-		PrintString("--- Xoa file thanh cong ---\n");
+		PrintString("--- Delete successfully ---\n");
 	}
 	else
 	{
-		PrintString("--- Xoa file that bai ---\n");
+		PrintString("--- Failed to delete!! ---\n");
 	}
 
 	return 0;

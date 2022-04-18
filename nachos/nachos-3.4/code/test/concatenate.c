@@ -12,9 +12,9 @@ int main() {
 	char source[MAX_LENGTH];
 	char dest[MAX_LENGTH];
 
-	PrintString(" - Nhap ten file nguon: ");
+	PrintString(" - Enter the source file: ");
 	ReadString(source, MAX_LENGTH);
-	PrintString(" - Nhap ten file dich: ");
+	PrintString(" - Enter the destination file: ");
 	ReadString(dest, MAX_LENGTH);
 	srcFileId = Open(source, 1);
 
@@ -39,14 +39,14 @@ int main() {
 		}
 		else
 		{
-			PrintString(" - Tao file dich khong thanh cong!!\n");
+			PrintString(" - Cannot create file!!\n");
 		}
 
 		Close(srcFileId);
 	}
 	else
 	{
-		PrintString("Loi khi mo file");
+		PrintString("Error Opening File!!!");
 	}
 
 }

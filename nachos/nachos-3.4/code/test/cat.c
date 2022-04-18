@@ -9,7 +9,7 @@ int main()
 	char c;
 	char fileName[MAX_LENGTH];
 	int i;
-	PrintString(" - Nhap vao ten file can doc: ");
+	PrintString(" - Enter filename: ");
 
 	ReadString(fileName, MAX_LENGTH);
 
@@ -24,7 +24,7 @@ int main()
 
 		Seek(0, openFileId);
 
-		PrintString(" --- Noi dung file ---\n");
+		PrintString(" --- File content ---\n");
 		for (; i < fileSize; i++)
 		{
 			Read(&c, 1, openFileId);
@@ -34,7 +34,7 @@ int main()
 	}
 	else
 	{
-		PrintString("Mo file that bai!\n");
+		PrintString("Error Opening File!!\n");
 	}
 	return 0;
 }
